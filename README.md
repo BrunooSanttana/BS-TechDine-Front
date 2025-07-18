@@ -17,22 +17,7 @@ yarn install
 npm start
 ```
 
-### 🛠 Backend
 
-```bash
-cd backend
-node index.js
-```
-
-### 🗃 Banco de Dados / API
-
-Ferramentas recomendadas para visualização e testes:
-
-- Postbird
-- pgAdmin
-- Postman
-
----
 
 ## ✅ Funcionalidades Implementadas
 
