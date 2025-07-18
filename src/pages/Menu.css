@@ -1,0 +1,58 @@
+/* Estilo principal do container */
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh; /* Altura mínima da tela */
+    background-color: #ffffff; /* Cor de fundo clara */
+    text-align: center; /* Centraliza o texto */
+}
+
+/* Estilo do logo */
+.menu-logo {
+    cursor: pointer; /* Cursor em forma de ponteiro ao passar sobre o logo */
+    width: 150px; /* Largura do logo */
+    margin-bottom: 40px; /* Espaçamento abaixo do logo */
+}
+
+/* Estilos do nav */
+nav {
+    width: 40%; /* Largura total */
+}
+
+/* Estilos da lista */
+.menu-list {
+    list-style-type: none; /* Remove marcadores padrão da lista */
+    padding: 0; /* Remove preenchimento padrão */
+    height: 25%;
+}
+
+/* Estilo dos itens da lista */
+.menu-list li {
+    margin: 20px 0; /* Margem acima e abaixo de cada item */
+    background-color: #4F4F4F; /* Cor de fundo ao passar o mouse */
+    height: 40px;
+    text-align: center; /* Centraliza o texto */
+    margin-top: 10px; /* Espaçamento abaixo do logo */
+
+}
+.menu-list li:hover {
+    background-color: #000000; /* Cor de fundo ao passar o mouse */
+
+}
+
+/* Estilo dos links */
+.menu-link {
+    text-decoration: none; /* Remove sublinhado */
+    color: #ffffff; /* Cor do texto */
+    font-size: 1.2rem; /* Tamanho da fonte */
+    padding: 0px 20px; /* Espaçamento interno */
+    transition: background-color 0.3s, color 0.3s; /* Transições suaves */
+}
+
+/* Efeito de hover nos links */
+.menu-link:hover {
+    background-color: #000000; /* Cor de fundo ao passar o mouse */
+    color: white; /* Cor do texto ao passar o mouse */
+}

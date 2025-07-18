@@ -1,0 +1,75 @@
+/* Estilos principais para a página de faturamento */
+.faturamento-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza o conteúdo */
+    background-color: #f9f9f9; /* Fundo leve */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+/* Logo como link */
+.faturamento-logo {
+    cursor: pointer;
+    width: 80px; /* Tamanho ajustado */
+    margin-bottom: 20px;
+}
+
+/* Título */
+.faturamento-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Estilos dos rótulos e inputs */
+.faturamento-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+input[type="date"]:focus {
+    border-color: #66afe9;
+    outline: none;
+}
+
+/* Botão */
+.faturamento-button {
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.faturamento-button:hover {
+    background-color: #4cae4c;
+}
+
+/* Texto do total faturado */
+.faturamento-total {
+    font-size: 1.5rem;
+    color: #333;
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+}

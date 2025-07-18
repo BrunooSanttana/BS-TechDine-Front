@@ -1,0 +1,61 @@
+/* Estilos principais do container */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza o conteúdo horizontalmente */
+    margin: 50px; /* Margem ao redor do container */
+}
+
+/* Estilo do logo */
+.logo {
+    cursor: pointer;
+    width: 150px; /* Tamanho fixo do logo */
+    margin-bottom: 10px; /* Espaçamento abaixo do logo */
+    margin-left: 70px;
+}
+
+/* Estilo do título */
+h2 {
+    font-size: 30px; /* Tamanho da fonte do título */
+    color: #333; /* Cor do texto */
+}
+
+/* Estilos da lista de comandas */
+.orders-list {
+    display: flex; /* Habilita o layout flexível */
+    flex-wrap: wrap; /* Permite que os itens se movam para a linha seguinte se não houver espaço */
+    justify-content: center; /* Centraliza os itens na linha */
+    list-style: none; /* Remove os marcadores da lista */
+    padding: 0; /* Remove o padding padrão */
+    font-size: 20px; /* Tamanho da fonte do título */
+}
+
+/* Estilo de cada item da lista */
+.orders-list li {
+    background-color: #f2f2f2; /* Cor de fundo leve */
+    border: 1px solid #ccc; /* Borda cinza */
+    border-radius: 5px; /* Bordas arredondadas */
+    padding: 10px 15px; /* Espaçamento interno */
+    margin: 10px; /* Espaçamento entre os itens */
+    cursor: pointer; /* Cursor de ponteiro ao passar o mouse */
+    transition: background-color 0.3s; /* Transição suave para a cor de fundo */
+}
+
+/* Efeito ao passar o mouse */
+.orders-list li:hover {
+    background-color: #000000; /* Cor de fundo ao passar o mouse */
+    color: #ffffff; /* Cor do texto */
+}
+
+/* Estilo do link para iniciar nova venda */
+.start-sale {
+    display: block; /* Exibe como bloco */
+    margin-top: 20px; /* Margem acima */
+    color: #0d2cc2; /* Cor do texto do link */
+    text-decoration: none; /* Remove o sublinhado */
+}
+
+/* Efeito ao passar o mouse sobre o link */
+.start-sale:hover {
+    text-decoration: underline; /* Adiciona sublinhado ao passar o mouse */
+}
