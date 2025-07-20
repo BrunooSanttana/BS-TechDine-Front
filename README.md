@@ -1,7 +1,7 @@
 
-# 🧾 BJ-Tech-Dine
+# 🧾 BS-TechDine
 
-**BJ-Tech-Dine** é um sistema de gerenciamento que fiz para um bar localizado na vila madalena, desenvolvido com **React** no frontend, **Node.js** com **Sequelize** no backend, e **PostgreSQL/Postbird** como banco de dados. Ele permite o cadastro de produtos, categorias, clientes, controle de pedidos por mesa/comanda/cliente, e cálculo de faturamento por período.
+**BS-TechDine** é um sistema de gerenciamento que fiz para um bar localizado na vila madalena, desenvolvido com **React** no frontend, **Node.js** com **Sequelize** no backend, e **PostgreSQL/Postbird** como banco de dados. Ele permite o cadastro de produtos, categorias, clientes, controle de pedidos por mesa/comanda/cliente, e cálculo de faturamento por período.
 
 ---
 
