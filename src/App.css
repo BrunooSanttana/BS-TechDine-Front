@@ -1,11 +1,6 @@
 /* App.css */
 
-/* Estilo Global */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
-}
+/* Estilo Global - removido para evitar conflito com páginas específicas */
 
 /* Container Principal */
 .App {

@@ -1,140 +1,214 @@
-/* Estilo para a seção de Vendas */
+body {
+    background: #252525;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
 .sales-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centraliza o conteúdo horizontalmente */
-    background-color: #fff; /* Cor de fundo branca */
-    padding: 20px; /* Espaçamento interno */
-    border-radius: 5px; /* Bordas arredondadas */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra leve */
-    margin: 20px; /* Espaçamento externo */
+    align-items: center;
+    background: #252525;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 500px;
+    margin: 40px auto;
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
 }
 
-/* Estilo do logo como link */
-.sales-logo {
-    cursor: pointer; /* Cursor de ponteiro */
-    width: 100px; /* Tamanho fixo do logo */
-    margin-bottom: 20px; /* Espaçamento abaixo do logo */
+.sales-container:hover {
+    transform: translateY(-3px);
 }
 
-/* Estilo do título */
-.centered-title {
+.sales-container .sales-logo {
+    cursor: pointer;
+    max-width: 200px;
+    height: 150px;
+    margin-bottom: 25px;
+    filter: drop-shadow(0 0 8px #FFD700) saturate(1.5) brightness(1.2);
+    transition: transform 0.3s ease, filter 0.3s ease;
+    object-fit: contain;
+}
+
+.sales-container .sales-logo:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 12px #FFD700) saturate(2) brightness(1.4);
+}
+
+.sales-container .centered-title {
     text-align: center;
-    color: #333;
-    font-size: 2rem; /* Tamanho do título */
-    margin-bottom: 20px; /* Espaçamento abaixo do título */
+    color: #FFD700;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 25px;
 }
 
-/* Estilos para os labels e inputs */
-label {
-    display: block; /* Exibe como bloco */
-    margin: 15px 0 5px; /* Margens superiores e inferiores */
-    font-weight: bold; /* Negrito para labels */
-    margin-left: 15px;
+.sales-container label {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 15px 0 5px;
+    font-weight: 500;
+    color: #ffffff;
 }
 
-input[type="text"],
-input[type="number"],
-select {
-    width: 50%; /* Largura total */
-    padding: 10px; /* Espaçamento interno */
-    margin-bottom: 10px; /* Margem abaixo do campo */
-    border: 1px solid #ccc; /* Borda padrão */
-    border-radius: 4px; /* Bordas arredondadas */
-    box-sizing: border-box; /* Inclui padding e bordas no cálculo da largura */
-    margin-left: 5px;
+.sales-container input[type="text"],
+.sales-container input[type="number"],
+.sales-container select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #353535;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    color: #ffffff;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
-/* Efeitos ao focar nos inputs */
-input[type="text"]:focus,
-input[type="number"]:focus,
-select:focus {
-    border-color: #66afe9; /* Cor da borda ao focar */
-    outline: none; /* Remove o contorno padrão */
+.sales-container input[type="text"]:focus,
+.sales-container input[type="number"]:focus,
+.sales-container select:focus {
+    border-color: #FFD700;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
+    outline: none;
+    background-color: #2a2a2a;
 }
 
-/* Estilo do botão */
-button {
-    background-color: #5cb85c; /* Cor de fundo verde */
-    color: white; /* Cor do texto */
-    border: none; /* Remove bordas */
-    padding: 10px 15px; /* Espaçamento interno */
-    border-radius: 5px; /* Bordas arredondadas */
-    cursor: pointer; /* Cursor de ponteiro */
-    font-size: 16px; /* Tamanho da fonte */
-    margin-top: 10px; /* Margem acima do botão */
-    margin-left: 15px;
+.sales-container button {
+    background-color: #FFD700;
+    color: #1C1C1C;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 10px;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Efeito ao passar o mouse sobre o botão */
-button:hover {
-    background-color: #4cae4c; /* Cor de fundo ao passar o mouse */
+.sales-container button:hover {
+    background-color: #E5C100;
+    transform: scale(1.05);
 }
 
+.sales-container button:active {
+    transform: scale(0.98);
+}
 
-.summary-title {
-    margin-top: 20px;
+.sales-container .summary-title {
+    margin-top: 25px;
     text-align: center;
-    color: #333;
-    font-size: 1.5rem; /* Aumenta o tamanho do título */
+    color: #FFD700;
+    font-size: 1.4rem;
+    font-weight: 600;
 }
 
-.order-summary {
-    background-color: #fff;
+.sales-container .order-summary {
+    background: #353535;
     padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra leve para destaque */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.order-details {
-    margin-bottom: 20px; /* Espaçamento entre os pedidos */
-}
-
-.order-header {
-    font-size: 1.2rem; /* Aumenta o tamanho do cabeçalho da ordem */
-    color: #007bff; /* Cor azul para destacar */
+.sales-container .order-header {
+    font-size: 1.1rem;
+    color: #FFD700;
     margin-bottom: 10px;
+    text-align: center;
+    font-weight: 500;
 }
 
-.order-items {
+.sales-container .order-items {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 
-.order-item {
-    background-color: #f9f9f9; /* Cor de fundo leve para os itens */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.sales-container .order-item {
+    background: #2a2a2a;
+    padding: 12px;
+    border: 1px solid #444;
+    border-radius: 8px;
     margin-bottom: 10px;
-    display: flex; /* Usar flexbox para alinhar conteúdo */
-    justify-content: space-between; /* Espaçamento entre informações e botão */
-    align-items: center; /* Centraliza verticalmente */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s ease;
+    color: #fff;
 }
 
-.item-note {
+.sales-container .order-item:hover {
+    background-color: #3a3a3a;
+}
+
+.sales-container .item-note {
     font-style: italic;
-    color: gray;
-    margin: 5px 0; /* Espaçamento superior e inferior */
+    color: #ccc;
+    margin: 5px 0;
 }
 
-.remove-button {
-    background-color: #d9534f;
+.sales-container .remove-button {
+    background-color: #dc3545;
     color: white;
     border: none;
-    padding: 5px 10px; /* Ajustar espaçamento do botão */
-    border-radius: 4px;
+    padding: 6px 10px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
 }
 
-.remove-button:hover {
-    background-color: #c9302c;
+.sales-container .remove-button:hover {
+    background-color: #b02a37;
 }
 
-.order-total {
-    font-weight: bold; /* Destaca o total */
+.sales-container .order-total {
+    font-weight: 600;
     margin-top: 10px;
-    font-size: 1.1rem; /* Tamanho da fonte do total */
-    text-align: right; /* Alinha o total à direita */
+    font-size: 1.1rem;
+    text-align: center;
+    color: #FFD700;
+}
+
+/* ---------------------- */
+/* RESPONSIVIDADE EXTRA   */
+/* ---------------------- */
+@media (max-width: 768px) {
+    .sales-container {
+        padding: 20px 15px;
+    }
+
+    .sales-container .sales-logo {
+        height: 100px;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sales-container {
+        padding: 15px 10px;
+    }
+
+    .sales-container .sales-logo {
+        height: 80px;
+        margin-bottom: 15px;
+    }
+
+    .sales-container button {
+        font-size: 0.9rem;
+        padding: 10px 15px;
+    }
 }

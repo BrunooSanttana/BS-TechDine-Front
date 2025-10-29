@@ -1,19 +1,38 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Register.css';
+import logo from '../images/presleylogo-removebg-preview.png';
 
-const Register = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+// Interface para definir a estrutura do usuário
+interface User {
+  username: string;
+  email: string;
+  password: string;
+}
+
+// Interface para a resposta da API
+interface RegisterResponse {
+  message?: string;
+  error?: string;
+  user?: {
+    id: number;
+    username: string;
+    email: string;
+  };
+}
+
+const Register: React.FC = () => {
+  const [username, setUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [successMessage, setSuccessMessage] = useState<string>('');
   const navigate = useNavigate();
-  
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
 
     // Cria o objeto com os dados do usuário
-    const user = {
+    const user: User = {
       username,
       email,
       password,
@@ -31,7 +50,7 @@ const Register = () => {
 
       // Verifica se a requisição foi bem-sucedida
       if (response.ok) {
-        const data = await response.json();
+        const data: RegisterResponse = await response.json();
         console.log('Usuário cadastrado:', data);
         setSuccessMessage('Cadastro efetuado com sucesso!');
         setTimeout(() => {
@@ -39,22 +58,28 @@ const Register = () => {
         }, 2000); // Tempo de espera para a mensagem de sucesso
       } else {
         console.error('Erro ao cadastrar o usuário');
+        setSuccessMessage('Erro ao cadastrar o usuário.');
       }
     } catch (error) {
       console.error('Erro ao conectar ao servidor:', error);
+      setSuccessMessage('Erro ao conectar ao servidor.');
     }
   };
 
   return (
-    <div>
+    <div className="register-container">
+      <img src={logo} alt="Logo" className="register-logo" />
+      <div></div>
       <h2 className="centered-title">Cadastro</h2>
-      <form onSubmit={handleSubmit}>
+      <div className="form-backgroud"></div>
+      <form className="login" onSubmit={handleSubmit}>
         <label>
           Nome:
           <input
             type="text"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+            required
           />
         </label>
         <br />
@@ -63,7 +88,8 @@ const Register = () => {
           <input
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+            required
           />
         </label>
         <br />
@@ -72,7 +98,8 @@ const Register = () => {
           <input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            required
           />
         </label>
         <br />
@@ -83,4 +110,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Register; 

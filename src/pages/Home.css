@@ -1,0 +1,103 @@
+/* Fonte moderna */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* CSS Global para a página Home */
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #1C1C1C, #2E2E2E);
+  font-family: 'Inter', sans-serif;
+  color: #ffffff;
+}
+
+.home-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.home-content {
+  text-align: center;
+  background: #2e2e2e;
+  padding: 80px 50px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+.home-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #FFD700; /* Dourado para destacar */
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.login {
+    background-color: #353535;
+    border-radius: 16px;
+    padding: 40px 50px;
+}
+
+.home-logo {
+    height: 150px;
+    margin-bottom: 40px;
+    filter: drop-shadow(0 0 8px #FFD700) saturate(1.5) brightness(1.2);
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.home-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.home-btn {
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.primary-btn {
+    background: #FFD700;
+    color: #000000;
+    border: 2px solid #FFD700;
+    min-width: 250px;
+    padding: 10px 100px;
+    display: inline-block;
+    text-align: center;
+    align-self: flex-start;
+  }
+
+  .primary-btn:hover {
+    background-color: #ffd900; /* muda o fundo no hover */
+    color: #1C1C1C; /* muda a cor do texto, opcional */
+    cursor: pointer;
+    transform: scale(1.05);
+  }
+  
+
+.secondary-btn:hover {
+  color: #000000;
+  border: 2px solid #FFD700;
+  transform: scale(1.05);
+}
+
+.secondary-btn {
+    color: #ffffff;
+    border: 2px solid #FFD700;
+    min-width: 250px;
+    padding: 10px 100px;
+    display: inline-block;
+    text-align: center;
+    align-self: flex-start; /* empurra o botão para a esquerda dentro do flex container */
+  }
+  
+  

@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Importando Link
-import logo from '../images/presleylogo.png';
+import { Link } from 'react-router-dom';
+import logo from '../images/presleylogo-removebg-preview.png';
 
+// Interface para definir a estrutura de um cliente
+interface Client {
+  id?: number;
+  name: string;
+  cpf: string;
+  phone: string;
+}
 
-const Clients = () => {
-  const [name, setName] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [phone, setPhone] = useState('');
-  const [clients, setClients] = useState([]);
-  const [successMessage, setSuccessMessage] = useState(''); // Estado para a mensagem de sucesso
+// Interface para a resposta da API
+interface ApiResponse {
+  id: number;
+  name: string;
+  cpf: string;
+  phone: string;
+}
 
+const Clients: React.FC = () => {
+  const [name, setName] = useState<string>('');
+  const [cpf, setCpf] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [clients, setClients] = useState<Client[]>([]);
+  const [successMessage, setSuccessMessage] = useState<string>('');
 
-  const handleClientSubmit = async (event) => {
+  const handleClientSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     try {
       const response = await fetch('http://localhost:5000/clients', {
@@ -23,15 +37,15 @@ const Clients = () => {
       });
 
       if (response.ok) {
-        const newClient = await response.json();
+        const newClient: ApiResponse = await response.json();
         setClients([...clients, newClient]);
         setName('');
         setCpf('');
         setPhone('');
-        setSuccessMessage('Cliente cadastrado com sucesso!'); // Mensagem de sucesso
+        setSuccessMessage('Cliente cadastrado com sucesso!'); 
         
-         // Limpa a mensagem após 3 segundos
-         setTimeout(() => {
+        // Limpa a mensagem após 3 segundos
+        setTimeout(() => {
           setSuccessMessage('');
         }, 3000);
       } else {
@@ -45,10 +59,9 @@ const Clients = () => {
   };
 
   return (
-    <div>
-       {/* Logo como link para o Menu */}
-       <Link to="/Menu">
-        <img src={logo} alt="Logo"  style={{ cursor: 'pointer', width: '100px', marginBottom: '20px' }} />
+  <div className="sales-container">
+      <Link to="/Menu">
+      <img src={logo} alt="Logo" className="sales-logo" />
       </Link>
       <h2 className="centered-title">Cadastrar Cliente</h2>
       <form onSubmit={handleClientSubmit}>
@@ -57,7 +70,7 @@ const Clients = () => {
           <input
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
             required
           />
         </label>
@@ -67,7 +80,7 @@ const Clients = () => {
           <input
             type="text"
             value={cpf}
-            onChange={(e) => setCpf(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCpf(e.target.value)}
             required
           />
         </label>
@@ -77,16 +90,16 @@ const Clients = () => {
           <input
             type="text"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhone(e.target.value)}
             required
           />
         </label>
         <br />
         <button type="submit">Cadastrar Cliente</button>
       </form>
-      {successMessage && <div className="success-message">{successMessage}</div>} {/* Exibir a mensagem de sucesso */}
+      {successMessage && <div className="success-message">{successMessage}</div>}
     </div>
   );
 };
 
-export default Clients;
+export default Clients; 

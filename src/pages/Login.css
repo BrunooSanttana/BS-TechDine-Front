@@ -1,0 +1,196 @@
+/* Login.css */
+
+/* Fonte moderna */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: #252525; /* sugiro padronizar com seu outro fundo */
+    box-sizing: border-box;
+}
+
+.login-container {
+    background: #353535;
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 40px 50px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.login {
+    background-color: #353535;
+    border-radius: 16px;
+    padding: 40px 50px;
+}
+
+.login-logo {
+    height: 150px;
+    margin-bottom: 40px;
+    filter: drop-shadow(0 0 8px #FFD700) saturate(1.5) brightness(1.2);
+    transition: transform 0.3s ease, filter 0.3s ease;
+    max-width: 90vw; /* evita ultrapassar a largura da tela */
+    object-fit: contain;
+}
+
+.login-logo:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 12px #FFD700) saturate(2) brightness(1.4);
+}
+
+.centered-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #FFD700;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+form label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-align: left;
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+form input[type="email"],
+form input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: box-shadow 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+form input[type="email"]:focus,
+form input[type="password"]:focus {
+    outline: none;
+    box-shadow: 0 0 8px 2px #FFD700;
+    background-color: #dadada;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 12px 0;
+    margin-top: 25px;
+    background-color: #FFD700;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1C1C1C;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #E5C100;
+    transform: translateY(-2px);
+}
+
+button[type="submit"]:active {
+    transform: scale(0.98);
+}
+
+.error-message {
+    margin-top: 15px;
+    color: #ff4c4c;
+    font-weight: 600;
+}
+
+/* ---------- RESPONSIVIDADE ----------- */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 30px 20px;
+        max-width: 100%;
+    }
+
+    .login {
+        padding: 30px 20px;
+    }
+
+    .login-logo {
+        height: 100px;
+        margin-bottom: 25px;
+    }
+
+    .centered-title {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    form label {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+
+    form input[type="email"],
+    form input[type="password"] {
+        font-size: 0.9rem;
+        padding: 10px 12px;
+    }
+
+    button[type="submit"] {
+        font-size: 1rem;
+        padding: 10px 0;
+        margin-top: 20px;
+    }
+
+    .error-message {
+        font-size: 0.9rem;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 768px) and (min-width: 481px) {
+    .login-container {
+        padding: 35px 40px;
+        max-width: 90%;
+    }
+
+    .login {
+        padding: 35px 40px;
+    }
+
+    .login-logo {
+        height: 120px;
+        margin-bottom: 30px;
+    }
+
+    .centered-title {
+        font-size: 2.2rem;
+        margin-bottom: 25px;
+    }
+
+    form label {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+    }
+
+    form input[type="email"],
+    form input[type="password"] {
+        font-size: 0.95rem;
+        padding: 11px 14px;
+    }
+
+    button[type="submit"] {
+        font-size: 1.05rem;
+        padding: 11px 0;
+        margin-top: 22px;
+    }
+}

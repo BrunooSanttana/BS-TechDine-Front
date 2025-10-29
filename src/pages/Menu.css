@@ -1,58 +1,134 @@
-/* Estilo principal do container */
+body {
+  background: #252525;
+  margin: 0; /* garante que não tenha espaço extra */
+  font-family: Arial, sans-serif;
+}
+
 .menu-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 90vh; /* Altura mínima da tela */
-    background-color: #ffffff; /* Cor de fundo clara */
-    text-align: center; /* Centraliza o texto */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #252525;
+  min-height: 100vh;
+  padding: 40px;
+  text-align: center;
+  box-sizing: border-box; /* para padding não "estourar" a largura */
 }
 
-/* Estilo do logo */
 .menu-logo {
-    cursor: pointer; /* Cursor em forma de ponteiro ao passar sobre o logo */
-    width: 150px; /* Largura do logo */
-    margin-bottom: 40px; /* Espaçamento abaixo do logo */
+  height: 150px;
+  margin-bottom: 40px;
+  filter: drop-shadow(0 0 8px #FFD700) saturate(1.5) brightness(1.2);
+  transition: transform 0.3s ease, filter 0.3s ease;
+  max-width: 90vw; /* para o logo não ultrapassar a largura da tela no mobile */
+  object-fit: contain;
 }
 
-/* Estilos do nav */
-nav {
-    width: 40%; /* Largura total */
+.menu-logo:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 12px #FFD700) saturate(2) brightness(1.4);
 }
 
-/* Estilos da lista */
-.menu-list {
-    list-style-type: none; /* Remove marcadores padrão da lista */
-    padding: 0; /* Remove preenchimento padrão */
-    height: 25%;
+.menu-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1000px;
+  box-sizing: border-box;
+  padding: 0 10px; /* espaçamento nas laterais em telas pequenas */
 }
 
-/* Estilo dos itens da lista */
-.menu-list li {
-    margin: 20px 0; /* Margem acima e abaixo de cada item */
-    background-color: #4F4F4F; /* Cor de fundo ao passar o mouse */
-    height: 40px;
-    text-align: center; /* Centraliza o texto */
-    margin-top: 10px; /* Espaçamento abaixo do logo */
-
-}
-.menu-list li:hover {
-    background-color: #000000; /* Cor de fundo ao passar o mouse */
-
+.menu-card {
+  background: #353535;
+  color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Estilo dos links */
-.menu-link {
-    text-decoration: none; /* Remove sublinhado */
-    color: #ffffff; /* Cor do texto */
-    font-size: 1.2rem; /* Tamanho da fonte */
-    padding: 0px 20px; /* Espaçamento interno */
-    transition: background-color 0.3s, color 0.3s; /* Transições suaves */
+.menu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
 
-/* Efeito de hover nos links */
-.menu-link:hover {
-    background-color: #000000; /* Cor de fundo ao passar o mouse */
-    color: white; /* Cor do texto ao passar o mouse */
+.menu-card h3 {
+  color: #FFD700;
+  margin-bottom: 10px;
+}
+
+.menu-card p {
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+  word-wrap: break-word; /* evita quebra de texto fora da tela */
+}
+
+.menu-btn {
+  display: inline-block;
+  text-decoration: none;
+  background: #FFD700;
+  color: #1C1C1C;
+  padding: 10px 25px;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: background 0.3s ease, transform 0.2s ease;
+  white-space: nowrap; /* evita quebra dentro do botão */
+  max-width: 100%; /* garante que botão não ultrapasse o container */
+  box-sizing: border-box;
+}
+
+.menu-btn:hover {
+  background: #E5C100;
+  transform: scale(1.05);
+}
+
+/* ---------------------- */
+/* RESPONSIVIDADE EXTRA   */
+/* ---------------------- */
+@media (max-width: 768px) {
+  .menu-container {
+      padding: 20px 15px;
+  }
+
+  .menu-logo {
+      height: 100px;
+      margin-bottom: 25px;
+  }
+
+  .menu-cards {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      padding: 0 5px;
+  }
+
+  .menu-card {
+      padding: 15px;
+  }
+
+  .menu-card p {
+      font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu-logo {
+      height: 80px;
+      margin-bottom: 20px;
+  }
+
+  .menu-cards {
+      grid-template-columns: 1fr; /* cards em coluna única para celular */
+      gap: 12px;
+      padding: 0 10px;
+  }
+
+  .menu-btn {
+      padding: 8px 20px;
+      font-size: 0.9rem;
+  }
+
+  .menu-card p {
+      font-size: 0.8rem;
+  }
 }
