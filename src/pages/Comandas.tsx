@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from '../images/presleylogo.png';
+import logo from '../images/presleylogo-removebg-preview.png';
 import './Comandas.css';
 
 // Interface para definir a estrutura de um pedido
@@ -31,13 +31,11 @@ const Comandas: React.FC = () => {
   };
 
   return (
-    <div className="container">
-      <div>
-        <Link to="/Menu">
-          <img src={logo} alt="Logo" className="logo" />
-        </Link>
-        <h2>Comandas em Aberto</h2>
-      </div>
+  <div className="sales-container">
+      <Link to="/Menu">
+      <img src={logo} alt="Logo" className="sales-logo" />
+      </Link>
+      <h2 className="centered-title">Faturamento</h2>
       {orders.length === 0 ? (
         <p>Nenhuma comanda em aberto.</p>
       ) : (
