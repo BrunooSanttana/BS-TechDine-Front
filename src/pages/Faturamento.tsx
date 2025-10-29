@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../images/presleylogo.png';
+import logo from '../images/presleylogo-removebg-preview.png';
 import './Faturamento.css';
+
 
 // Interface para definir a estrutura da resposta da API
 interface FaturamentoResponse {
@@ -38,12 +39,11 @@ const Faturamento: React.FC = () => {
   };
 
   return (
-    <div className="faturamento-container">
+     <div className="sales-container">
       <Link to="/Menu">
-        <img src={logo} alt="Logo" className="faturamento-logo" />
+      <img src={logo} alt="Logo" className="sales-logo" />
       </Link>
-
-      <h2 className="faturamento-title">Faturamento</h2>
+      <h2 className="centered-title">Faturamento</h2>
 
       <div>
         <label className="faturamento-label">
