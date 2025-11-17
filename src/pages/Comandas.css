@@ -9,29 +9,32 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.sales-container {
+
+.comandas {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #252525;
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   width: 100%;
-  max-width: 800px;
-  margin: 40px auto;
-  box-sizing: border-box;
+  margin-top: 20px;
+  /* ⬅️ agora o logo fica no topo */
+  min-height: 100vh;
+  padding-top: 20px;
 }
 
-.sales-logo {
+
+/* Logo no topo, centralizado */
+.comandas-logo {
   cursor: pointer;
-  max-width: 200px;
   height: 150px;
-  margin-bottom: 25px;
   filter: drop-shadow(0 0 8px #FFD700) saturate(1.5) brightness(1.2);
   transition: transform 0.3s ease, filter 0.3s ease;
   object-fit: contain;
+  margin-bottom: 20px;
+  /* espaço entre logo e título */
 }
+
+
+
 
 .sales-logo:hover {
   transform: scale(1.05);
@@ -43,7 +46,7 @@ body {
   color: #FFD700;
   font-size: 2rem;
   font-weight: 600;
-  margin-bottom: 25px;
+  margin-top: 30px;
 }
 
 .no-orders {
@@ -57,17 +60,51 @@ body {
 ------------------------ */
 .orders-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
   width: 100%;
-  margin-bottom: 20px;
+  max-width: 1900px; /* valor ideal para telas grandes */
+  margin: 0 auto;
+  padding: 0 10px;
 }
+
+/* 🖥️ Telas até 1600px */
+@media (max-width: 1600px) {
+  .orders-grid {
+    max-width: 1500px;
+  }
+}
+
+/* 💻 Telas até 1400px (ex: 1366x768) */
+@media (max-width: 1400px) {
+  .orders-grid {
+    max-width: 1300px; /* o valor que você pediu */
+  }
+}
+
+/* 📱 Tablets */
+@media (max-width: 992px) {
+  .orders-grid {
+    max-width: 900px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+/* 📱 Celulares */
+@media (max-width: 600px) {
+  .orders-grid {
+    max-width: 100%;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+
 
 .order-card {
   background-color: #353535;
   border-radius: 10px;
-  padding: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -84,9 +121,12 @@ body {
   margin: 0 0 12px 0;
   font-size: 1.2rem;
   font-weight: 600;
-  color: #FFD700;
   text-align: center;
 }
+.comandas .order-card .order-header {
+  color: #ffffff !important;
+}
+
 
 /* ----------------------
    BOTÕES DAS COMANDAS
@@ -98,33 +138,46 @@ body {
   flex-wrap: wrap;
 }
 
+/* BOTÕES DAS COMANDAS */
 .btn-pedido,
-.btn-detalhes,
-.start-sale {
+.btn-detalhes {
   background-color: #FFD700;
   color: #1C1C1C;
   border: none;
-  padding: 10px 16px;
+  padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  flex: 1;
-  min-width: 100px;
 }
 
+/* BOTÃO INICIAR NOVA VENDA */
+.start-sale {
+  background-color: #058605; /* cor separada */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: block;
+  margin: 20px auto;
+  width: 200px;
+}
+
+/* HOVERs */
 .btn-pedido:hover,
-.btn-detalhes:hover,
-.start-sale:hover {
-  background-color: #E5C100;
+.btn-detalhes:hover {
+  background-color: #e5c100;
   transform: scale(1.05);
 }
 
-.btn-pedido:active,
-.btn-detalhes:active,
-.start-sale:active {
-  transform: scale(0.98);
+.start-sale:hover {
+  background-color: #174117;
+  transform: scale(1.05);
 }
 
 /* ----------------------

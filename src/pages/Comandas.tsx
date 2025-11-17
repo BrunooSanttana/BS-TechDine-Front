@@ -39,9 +39,9 @@ const Comandas: React.FC = () => {
   };
 
   return (
-    <div className="sales-container">
+    <div className="comandas">
       <Link to="/menu">
-        <img src={logo} alt="Logo" className="sales-logo" />
+        <img src={logo} alt="Logo" className="comandas-logo" />
       </Link>
       <h2 className="centered-title">Comandas em Aberto</h2>
 
