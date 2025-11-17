@@ -26,34 +26,56 @@ const Comandas: React.FC = () => {
     }
   }, []);
 
-  const handleOrderClick = (tableNumber: string | number): void => {
+  const handleNewSale = (): void => {
+    navigate('/sales');
+  };
+
+  const handleMakeOrder = (tableNumber: string | number): void => {
     navigate(`/sales/${tableNumber}`);
   };
 
+  const handleViewDetails = (tableNumber: string | number): void => {
+    navigate(`/sales-details/${tableNumber}`);
+  };
+
   return (
-  <div className="sales-container">
-      <Link to="/Menu">
-      <img src={logo} alt="Logo" className="sales-logo" />
+    <div className="sales-container">
+      <Link to="/menu">
+        <img src={logo} alt="Logo" className="sales-logo" />
       </Link>
-      <h2 className="centered-title">Faturamento</h2>
+      <h2 className="centered-title">Comandas em Aberto</h2>
+
       {orders.length === 0 ? (
-        <p>Nenhuma comanda em aberto.</p>
+        <p className="no-orders">Nenhuma comanda em aberto.</p>
       ) : (
-        <ul className="orders-list">
+        <div className="orders-grid">
           {orders.map((order: Order, index: number) => (
-            <li 
-              key={index} 
-              onClick={() => handleOrderClick(order.tableNumber)}
-              style={{ cursor: 'pointer' }}
-            >
-              {order.tableNumber}
-            </li>
+            <div key={index} className="order-card">
+              <h3 className="order-header">Mesa {order.tableNumber}</h3>
+              <div className="order-actions">
+                <button
+                  className="btn-pedido"
+                  onClick={() => handleMakeOrder(order.tableNumber)}
+                >
+                  ➕ Fazer Pedido
+                </button>
+                <button
+                  className="btn-detalhes"
+                  onClick={() => handleViewDetails(order.tableNumber)}
+                >
+                  📋 Ver Detalhes
+                </button>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
-      <Link to="/sales" className="start-sale">Iniciar Nova Venda</Link>
+
+      <button onClick={handleNewSale} className="start-sale">
+        Iniciar Nova Venda
+      </button>
     </div>
   );
 };
 
-export default Comandas; 
+export default Comandas;

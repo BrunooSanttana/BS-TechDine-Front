@@ -1,0 +1,81 @@
+.sales-details-container {
+  background: #252525;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+}
+
+.sales-logo {
+  max-width: 200px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  filter: drop-shadow(0 0 8px #FFD700);
+}
+
+.centered-title {
+  color: #FFD700;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.order-details {
+  background: #353535;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.order-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  background: #2a2a2a;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.item-note {
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #bbb;
+  margin-top: 4px;
+}
+
+.item-total {
+  font-weight: bold;
+  color: #FFD700;
+}
+
+.order-total {
+  margin-top: 20px;
+  text-align: right;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #FFD700;
+}
+
+.back-button {
+  margin-top: 25px;
+  text-decoration: none;
+  background-color: #FFD700;
+  color: #1C1C1C;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #e5c100;
+  transform: scale(1.05);
+}

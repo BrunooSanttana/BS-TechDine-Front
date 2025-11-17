@@ -1,3 +1,6 @@
+/* ---------------------- */
+/* ESTILO GLOBAL          */
+/* ---------------------- */
 body {
     background: #252525;
     margin: 0;
@@ -46,6 +49,9 @@ body {
     margin-bottom: 25px;
 }
 
+/* ---------------------- */
+/* FORMULÁRIOS            */
+/* ---------------------- */
 .sales-container label {
     display: flex;
     flex-direction: column;
@@ -82,6 +88,9 @@ body {
     background-color: #2a2a2a;
 }
 
+/* ---------------------- */
+/* BOTÕES                  */
+/* ---------------------- */
 .sales-container button {
     background-color: #FFD700;
     color: #1C1C1C;
@@ -105,6 +114,9 @@ body {
     transform: scale(0.98);
 }
 
+/* ---------------------- */
+/* RESUMO DO PEDIDO        */
+/* ---------------------- */
 .sales-container .summary-title {
     margin-top: 25px;
     text-align: center;
@@ -113,74 +125,89 @@ body {
     font-weight: 600;
 }
 
-.sales-container .order-summary {
-    background: #353535;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    margin-top: 20px;
+.order-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
     width: 100%;
-    box-sizing: border-box;
 }
 
-.sales-container .order-header {
+.order-card {
+    background-color: #353535;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+
+.order-card .order-header {
+    font-weight: 600;
     font-size: 1.1rem;
     color: #FFD700;
     margin-bottom: 10px;
     text-align: center;
-    font-weight: 500;
 }
 
-.sales-container .order-items {
-    list-style-type: none;
+.order-card .order-items {
+    list-style: none;
     padding: 0;
     margin: 0;
+    flex-grow: 1;
 }
 
-.sales-container .order-item {
+.order-card .order-item {
     background: #2a2a2a;
-    padding: 12px;
-    border: 1px solid #444;
+    padding: 10px;
     border-radius: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: background-color 0.2s ease;
-    color: #fff;
+    font-size: 0.95rem;
 }
 
-.sales-container .order-item:hover {
-    background-color: #3a3a3a;
-}
-
-.sales-container .item-note {
-    font-style: italic;
+.order-card .item-note {
+    font-size: 0.8rem;
     color: #ccc;
-    margin: 5px 0;
+    margin-top: 4px;
 }
 
-.sales-container .remove-button {
+.order-card .order-total {
+    font-weight: 600;
+    margin-top: 10px;
+    font-size: 1rem;
+    text-align: center;
+    color: #FFD700;
+}
+
+.clickable {
+    cursor: pointer;
+    color: #2b7de9;
+    text-decoration: underline;
+}
+
+.remove-button {
+    margin-left: 8px;
+    padding: 2px 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
     background-color: #dc3545;
     color: white;
     border: none;
-    padding: 6px 10px;
     border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.2s ease;
 }
 
-.sales-container .remove-button:hover {
+.remove-button:hover {
     background-color: #b02a37;
-}
-
-.sales-container .order-total {
-    font-weight: 600;
-    margin-top: 10px;
-    font-size: 1.1rem;
-    text-align: center;
-    color: #FFD700;
 }
 
 /* ---------------------- */
@@ -212,3 +239,4 @@ body {
         padding: 10px 15px;
     }
 }
+

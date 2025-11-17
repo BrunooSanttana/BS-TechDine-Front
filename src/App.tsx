@@ -9,6 +9,8 @@ import Home from './pages/Home';
 import Menu from './pages/Menu';
 import Products from './pages/Products';
 import Comandas from './pages/Comandas';
+import SalesDetails from './pages/SalesDetails';
+
 
 const App: React.FC = () => {
   return (
@@ -19,11 +21,13 @@ const App: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/sales" element={<Sales />} />
+          <Route path="/sales/:tableNumber" element={<Sales />} />
           <Route path="/faturamento" element={<Faturamento />} />
           <Route path="/clients" element={<Clients />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/products" element={<Products />} />
           <Route path="/comandas" element={<Comandas />} />
+          <Route path="/sales-details/:tableNumber" element={<SalesDetails />} />
         </Routes>
       </main>
     </Router>
