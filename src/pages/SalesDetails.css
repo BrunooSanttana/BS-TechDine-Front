@@ -6,11 +6,14 @@
   flex-direction: column;
   align-items: center;
   padding: 30px;
+  box-sizing: border-box;
 }
+
+.logo-link { display: block; }
 
 .sales-logo {
   max-width: 200px;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   cursor: pointer;
   filter: drop-shadow(0 0 8px #FFD700);
 }
@@ -18,15 +21,15 @@
 .centered-title {
   color: #FFD700;
   font-size: 1.8rem;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .order-details {
   background: #353535;
-  padding: 20px;
+  padding: 16px;
   border-radius: 10px;
   width: 100%;
-  max-width: 500px;
+  max-width: 680px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -39,17 +42,42 @@
 .order-item {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background: #2a2a2a;
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 10px;
   border-radius: 8px;
+}
+
+.item-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.remove-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.remove-btn:hover {
+  background: #c0392b;
+  transform: scale(1.03);
 }
 
 .item-note {
   font-style: italic;
   font-size: 0.9rem;
   color: #bbb;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .item-total {
@@ -58,24 +86,153 @@
 }
 
 .order-total {
-  margin-top: 20px;
+  margin-top: 12px;
   text-align: right;
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1.15rem;
+  font-weight: 700;
   color: #FFD700;
 }
 
+/* ações: voltar + fechar lado a lado em telas largas */
+.actions-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 680px;
+}
+
+/* Voltar */
 .back-button {
-  margin-top: 25px;
   text-decoration: none;
   background-color: #FFD700;
   color: #1C1C1C;
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: 8px;
-  transition: transform 0.2s ease, background-color 0.3s ease;
+  font-weight: 700;
+  transition: transform 0.12s ease, background-color 0.12s ease;
 }
 
 .back-button:hover {
+  transform: translateY(-2px);
   background-color: #e5c100;
-  transform: scale(1.05);
+}
+
+/* Fechar conta (abre caixa) */
+.close-bill {
+  background-color: #028a02;
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.12s ease;
+}
+
+.close-bill:hover {
+  transform: translateY(-2px);
+  background-color: #17b017;
+}
+
+/* ÁREA DE PAGAMENTO */
+.payment-area {
+  background: #353535;
+  border-radius: 10px;
+  padding: 18px;
+  margin-top: 18px;
+  width: 100%;
+  max-width: 680px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+
+.payment-area h3 {
+  color: #FFD700;
+  margin: 0 0 12px 0;
+  text-align: center;
+}
+
+.payment-label {
+  color: #FFD700;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.payment-select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #2a2a2a;
+  color: #fff;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.confirm-bill {
+  width: 100%;
+  background-color: #008000;
+  color: white;
+  padding: 12px;
+  font-weight: 800;
+  border: none;
+  border-radius: 8px;
+  margin-top: 12px;
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.12s ease;
+}
+
+.confirm-bill:hover {
+  transform: translateY(-2px);
+  background-color: #0cb40c;
+}
+
+.cancel-payment {
+  width: 100%;
+  background-color: #e74c3c;
+  color: white;
+  padding: 12px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.12s ease;
+}
+
+.cancel-payment:hover {
+  transform: translateY(-2px);
+  background-color: #c0392b;
+}
+
+/* mensagem de erro */
+.payment-error {
+  color: #ff6b6b;
+  font-weight: 700;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* responsividade */
+@media (max-width: 600px) {
+  .order-details, .payment-area {
+    padding: 12px;
+    max-width: 100%;
+  }
+
+  .actions-row {
+    flex-direction: column;
+  }
+
+  .back-button, .close-bill {
+    width: 100%;
+  }
+
+  .remove-btn {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
 }
