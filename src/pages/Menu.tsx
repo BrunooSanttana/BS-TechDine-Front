@@ -17,7 +17,7 @@ const modules: Module[] = [
   { name: 'Clientes', path: '/clients', desc: 'Cadastre, edite e gerencie informações de clientes.' },
   { name: 'Produtos', path: '/products', desc: 'Adicione ou edite itens do cardápio.' },
   { name: 'Comandas', path: '/comandas', desc: 'Monitore e administre comandas abertas.' },
-  { name: 'Estoque', path: '/Menu', desc: 'Controle o estoque de produtos. (Em desenvolvimento)' },
+  { name: 'Estoque', path: '/stock', desc: 'Controle o estoque de produtos. (Em desenvolvimento)' },
   { name: 'Perfis de Acesso', path: '/Menu', desc: 'Defina permissões de colaboradores. (Em breve)'  },
   { name: 'Promoções', path: '/Menu', desc: 'Crie promoções e descontos programados. (Em breve)' },
   { name: 'Impressão de Comandas', path: '/Menu', desc: 'Gere e imprima comandas. (Em breve)' },

@@ -10,6 +10,7 @@ import Menu from './pages/Menu';
 import Products from './pages/Products';
 import Comandas from './pages/Comandas';
 import SalesDetails from './pages/SalesDetails';
+import Stock from './pages/Stock';
 
 
 const App: React.FC = () => {
@@ -28,6 +29,7 @@ const App: React.FC = () => {
           <Route path="/products" element={<Products />} />
           <Route path="/comandas" element={<Comandas />} />
           <Route path="/sales-details/:tableNumber" element={<SalesDetails />} />
+          <Route path="/stock" element={<Stock />} />
         </Routes>
       </main>
     </Router>

@@ -32,14 +32,6 @@ interface Order {
   items: OrderItem[];
 }
 
-interface PrintItem {
-  productName: string;
-  quantity: number;
-  price: number;
-  total: number;
-  note?: string;
-}
-
 const Sales: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
