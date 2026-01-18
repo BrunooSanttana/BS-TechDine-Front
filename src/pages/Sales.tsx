@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation, useParams } from 'react-router-dom';
+import axios from 'axios';
 import logo from '../images/presleylogo-removebg-preview.png';
 import printJS from 'print-js';
 import './Sales.css';
@@ -15,21 +16,17 @@ interface Product {
   name: string;
   price: number;
   categoryId: number;
+  stock: number;
 }
 
 interface OrderItem {
   category: string;
-  product: string;
+  productId: number;
   productName: string;
   price: number;
   quantity: number;
   total: number;
   note?: string;
-}
-
-interface Order {
-  tableNumber: string;
-  items: OrderItem[];
 }
 
 const Sales: React.FC = () => {
@@ -39,41 +36,26 @@ const Sales: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<string>('');
   const [selectedProductName, setSelectedProductName] = useState<string>('');
   const [selectedProductPrice, setSelectedProductPrice] = useState<number>(0);
+  const [selectedProductStock, setSelectedProductStock] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
-  const [orders, setOrders] = useState<Order[]>([]);
   const [note, setNote] = useState<string>('');
-
+  const [tableNumber, setTableNumber] = useState<string>('');
   const navigate = useNavigate();
   const location = useLocation();
   const { tableNumber: tableFromParams } = useParams<{ tableNumber: string }>();
-  const [tableNumber, setTableNumber] = useState<string>(tableFromParams || '');
 
   // Receber mesa do Comandas
   useEffect(() => {
-    if (location.state && location.state.tableNumber) {
-      setTableNumber(location.state.tableNumber);
-    }
-  }, [location.state]);
-
-  // Recuperar pedidos salvos
-  useEffect(() => {
-    const savedOrders = localStorage.getItem('salesOrders');
-    if (savedOrders) {
-      try {
-        setOrders(JSON.parse(savedOrders));
-      } catch {
-        setOrders([]);
-      }
-    }
-  }, []);
+    if (tableFromParams) setTableNumber(tableFromParams);
+    if (location.state && location.state.tableNumber) setTableNumber(location.state.tableNumber);
+  }, [location.state, tableFromParams]);
 
   // Buscar categorias
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch('http://localhost:5000/categories');
-        const data = await res.json();
-        setCategories(data);
+        const res = await axios.get('http://localhost:5000/categories');
+        setCategories(res.data);
       } catch (e) {
         console.error('Erro ao buscar categorias:', e);
       }
@@ -83,18 +65,16 @@ const Sales: React.FC = () => {
 
   // Buscar produtos da categoria
   useEffect(() => {
-    if (selectedCategory) {
-      const fetchProducts = async () => {
-        try {
-          const res = await fetch(`http://localhost:5000/categories/${selectedCategory}/products`);
-          const data = await res.json();
-          setProducts(data);
-        } catch (e) {
-          console.error('Erro ao buscar produtos:', e);
-        }
-      };
-      fetchProducts();
-    }
+    if (!selectedCategory) return;
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/categories/${selectedCategory}/products`);
+        setProducts(res.data);
+      } catch (e) {
+        console.error('Erro ao buscar produtos:', e);
+      }
+    };
+    fetchProducts();
   }, [selectedCategory]);
 
   // Atualizar produto selecionado
@@ -103,94 +83,76 @@ const Sales: React.FC = () => {
     if (product) {
       setSelectedProductName(product.name);
       setSelectedProductPrice(product.price);
+      setSelectedProductStock(product.stock);
     } else {
       setSelectedProductName('');
       setSelectedProductPrice(0);
+      setSelectedProductStock(0);
     }
   }, [selectedProduct, products]);
 
-  // Salvar no localStorage
-  const saveOrders = (updatedOrders: Order[]) => {
-    localStorage.setItem('salesOrders', JSON.stringify(updatedOrders));
-  };
+  // Adicionar item ao pedido (envia ao backend)
+  const handleAddItem = async () => {
 
-  // Adicionar item ao pedido
-  const handleAddItem = () => {
-    if (!tableNumber) {
-      alert('Informe o número da mesa ou cliente.');
-      return;
-    }
-    if (!selectedCategory || !selectedProduct) {
-      alert('Selecione categoria e produto.');
-      return;
-    }
+    if (!tableNumber) return alert('Informe o número da mesa ou cliente.');
+    if (!selectedCategory || !selectedProduct) return alert('Selecione categoria e produto.');
+    if (quantity > selectedProductStock) return alert('Estoque insuficiente para este produto.');
 
     const itemTotal = selectedProductPrice * quantity;
-    const existingOrderIndex = orders.findIndex(o => o.tableNumber === tableNumber);
 
-    let updatedOrders = [...orders];
-
-    if (existingOrderIndex !== -1) {
-      const order = updatedOrders[existingOrderIndex];
-      const existingItemIndex = order.items.findIndex(i => i.product === selectedProduct);
-
-      if (existingItemIndex !== -1) {
-        const item = order.items[existingItemIndex];
-        item.quantity += quantity;
-        item.total = item.quantity * item.price;
-      } else {
-        order.items.push({
-          category: selectedCategory,
-          product: selectedProduct,
-          productName: selectedProductName,
-          price: selectedProductPrice,
-          quantity,
-          total: itemTotal,
-          note
-        });
-      }
-    } else {
-      updatedOrders.push({
+    try {
+      // Envia para o backend
+      await axios.post('http://localhost:5000/orders', {
         tableNumber,
+        paymentMethod: 'dinheiro',
         items: [{
-          category: selectedCategory,
-          product: selectedProduct,
-          productName: selectedProductName,
-          price: selectedProductPrice,
+          productId: Number(selectedProduct),
           quantity,
-          total: itemTotal,
-          note
+          total: itemTotal
         }]
       });
-    }
 
-    saveOrders(updatedOrders);
-    setOrders(updatedOrders);
+      alert('Item adicionado e estoque atualizado');
 
-    // Impressão para cozinha
-    if (selectedCategory === 'porção' || selectedCategory === 'lanche') {
-      printJS({
-        printable: [{
-          productName: selectedProductName,
-          quantity,
-          price: selectedProductPrice,
-          total: itemTotal,
-          note
-        }],
-        properties: ['productName', 'quantity', 'price', 'total', 'note'],
-        type: 'json',
-        header: 'Pedido da Cozinha'
+      // Diminuir estoque do produto
+      await axios.put(`http://localhost:5000/stock/${selectedProduct}`, {
+        stock: selectedProductStock - quantity
       });
+
+
+      // Impressão para cozinha
+      if (selectedCategory === 'porção' || selectedCategory === 'lanche') {
+        printJS({
+          printable: [{
+            productName: selectedProductName,
+            quantity,
+            price: selectedProductPrice,
+            total: itemTotal,
+            note
+          }],
+          properties: ['productName', 'quantity', 'price', 'total', 'note'],
+          type: 'json',
+          header: 'Pedido da Cozinha'
+        });
+      }
+
+      // Limpar campos
+      setSelectedCategory('');
+      setSelectedProduct('');
+      setQuantity(1);
+      setNote('');
+
+      // Voltar automaticamente
+      navigate('/comandas');
+
+    } catch (error: any) {
+      console.error(error);
+      if (error.response?.data?.error) {
+        alert(`Erro: ${error.response.data.error}`);
+      } else {
+        alert('Erro ao adicionar item.');
+      }
     }
-
-    // Limpar campos
-    setSelectedCategory('');
-    setSelectedProduct('');
-    setQuantity(1);
-    setNote('');
-
-    // Voltar automaticamente
-    navigate('/comandas');
   };
 
   return (
@@ -230,7 +192,9 @@ const Sales: React.FC = () => {
         >
           <option value="">Selecione</option>
           {products.map(p => (
-            <option key={p.id} value={p.id}>{p.name}</option>
+            <option key={p.id} value={p.id}>
+              {p.name} (Estoque: {p.stock})
+            </option>
           ))}
         </select>
       </label>
@@ -250,6 +214,7 @@ const Sales: React.FC = () => {
         <input
           type="number"
           min={1}
+          max={selectedProductStock}
           value={quantity}
           onChange={(e) => setQuantity(Number(e.target.value))}
         />
