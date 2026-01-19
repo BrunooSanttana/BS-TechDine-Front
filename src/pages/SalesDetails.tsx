@@ -34,46 +34,61 @@ const SalesDetails: React.FC = () => {
   const [paymentMethod, setPaymentMethod] = useState('');
   const [showPaymentBox, setShowPaymentBox] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [itemError, setItemError] = useState('');
 
   const navigate = useNavigate();
 
   // Buscar comanda pelo backend
   useEffect(() => {
-  if (!orderId) return;
+    if (!orderId) return;
 
-  const fetchOrder = async () => {
-    try {
-      const res = await axios.get(`http://localhost:5000/orders/${orderId}`);
-      setOrder(res.data);
-    } catch (err) {
-      console.error('Erro ao buscar comanda:', err);
-      setError('Comanda não encontrada');
-      setOrder(null);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchOrder = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/orders/${orderId}`);
+        setOrder(res.data);
+      } catch (err) {
+        console.error('Erro ao buscar comanda:', err);
+        setError('Comanda não encontrada');
+        setOrder(null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  fetchOrder();
-}, [orderId]);
-
+    fetchOrder();
+  }, [orderId]);
 
   // Calcula total da comanda
   const orderTotal = order?.OrderItems.reduce((sum, i) => sum + i.total, 0) ?? 0;
 
-  // Remove item do pedido
   const handleRemoveItem = async (itemId: number) => {
-    if (!order) return;
+  if (!order) return;
 
-    try {
-      await axios.delete(`http://localhost:5000/orders/${order.id}/items/${itemId}`);
-      const updatedItems = order.OrderItems.filter((i) => i.id !== itemId);
-      setOrder({ ...order, OrderItems: updatedItems });
-    } catch (err) {
-      console.error('Erro ao remover item:', err);
-      alert('Erro ao remover item. Tente novamente.');
+  try {
+    const res = await axios.patch(`http://localhost:5000/orders/${order.id}/items/${itemId}/decrement`);
+    const updatedItem = res.data.orderItem;
+
+    if (updatedItem) {
+      // Atualiza a lista com a nova quantidade
+      setOrder({
+        ...order,
+        OrderItems: order.OrderItems.map((i) =>
+          i.id === updatedItem.id ? updatedItem : i
+        ),
+      });
+    } else if (res.data.removedItemId) {
+      // Remove o item se a quantidade chegou a 0
+      setOrder({
+        ...order,
+        OrderItems: order.OrderItems.filter((i) => i.id !== res.data.removedItemId),
+      });
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert('Erro ao remover item. Tente novamente.');
+  }
+};
+
 
   // Abrir caixa de pagamento
   const handleOpenPayment = () => {
@@ -85,7 +100,7 @@ const SalesDetails: React.FC = () => {
   const handleConfirmCloseBill = async () => {
     if (!order) return;
     if (!paymentMethod) {
-      alert('Selecione o método de pagamento antes de fechar a conta.');
+      setItemError('Selecione o método de pagamento antes de fechar a conta.');
       return;
     }
 
@@ -96,10 +111,11 @@ const SalesDetails: React.FC = () => {
       navigate('/comandas');
     } catch (err) {
       console.error(err);
-      alert('Erro ao fechar conta. Tente novamente.');
+      setItemError('Erro ao fechar conta. Tente novamente.');
     } finally {
       setSubmitting(false);
       setShowPaymentBox(false);
+      setTimeout(() => setItemError(''), 5000);
     }
   };
 
@@ -123,6 +139,8 @@ const SalesDetails: React.FC = () => {
       </Link>
 
       <h2 className="centered-title">Comanda {order.tableNumber}</h2>
+
+      {itemError && <p className="error-message">{itemError}</p>}
 
       <ul className="order-items">
         {order.OrderItems.map((item) => (
