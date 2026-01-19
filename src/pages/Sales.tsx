@@ -50,18 +50,26 @@ const Sales: React.FC = () => {
     if (location.state && location.state.tableNumber) setTableNumber(location.state.tableNumber);
   }, [location.state, tableFromParams]);
 
-  // Buscar categorias
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await axios.get('http://localhost:5000/categories');
-        setCategories(res.data);
-      } catch (e) {
-        console.error('Erro ao buscar categorias:', e);
-      }
-    };
-    fetchCategories();
-  }, []);
+ // Buscar categorias (sem Matéria Prima)
+useEffect(() => {
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/categories');
+
+      // Remove a categoria Matéria-Prima
+      const filtered = res.data.filter(
+        (c: Category) => c.name !== 'Matéria-Prima'
+      );
+
+      setCategories(filtered);
+    } catch (e) {
+      console.error('Erro ao buscar categorias:', e);
+    }
+  };
+  fetchCategories();
+}, []);
+
+
 
   // Buscar produtos da categoria
   useEffect(() => {
