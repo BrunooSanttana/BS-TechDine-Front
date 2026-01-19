@@ -6,11 +6,6 @@ import printJS from 'print-js';
 import './Sales.css';
 
 // Interfaces
-interface Category {
-  id: number;
-  name: string;
-}
-
 interface Product {
   id: number;
   name: string;
@@ -20,13 +15,23 @@ interface Product {
 }
 
 interface OrderItem {
-  category: string;
-  productId: number;
-  productName: string;
-  price: number;
+  id: number;
   quantity: number;
   total: number;
-  note?: string;
+  Product: Product;
+}
+
+interface Order {
+  id: number;
+  tableNumber: string; // ⬅️ Aqui
+  paymentMethod: string;
+  totalAmount: number;
+  OrderItems: OrderItem[];
+}
+
+interface Category {
+  id: number;
+  name: string;
 }
 
 const Sales: React.FC = () => {
@@ -50,24 +55,24 @@ const Sales: React.FC = () => {
     if (location.state && location.state.tableNumber) setTableNumber(location.state.tableNumber);
   }, [location.state, tableFromParams]);
 
- // Buscar categorias (sem Matéria Prima)
-useEffect(() => {
-  const fetchCategories = async () => {
-    try {
-      const res = await axios.get('http://localhost:5000/categories');
+  // Buscar categorias (sem Matéria Prima)
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/categories');
 
-      // Remove a categoria Matéria-Prima
-      const filtered = res.data.filter(
-        (c: Category) => c.name !== 'Matéria-Prima'
-      );
+        // Remove a categoria Matéria-Prima
+        const filtered = res.data.filter(
+          (c: Category) => c.name !== 'Matéria-Prima'
+        );
 
-      setCategories(filtered);
-    } catch (e) {
-      console.error('Erro ao buscar categorias:', e);
-    }
-  };
-  fetchCategories();
-}, []);
+        setCategories(filtered);
+      } catch (e) {
+        console.error('Erro ao buscar categorias:', e);
+      }
+    };
+    fetchCategories();
+  }, []);
 
 
 
@@ -100,68 +105,79 @@ useEffect(() => {
   }, [selectedProduct, products]);
 
   // Adicionar item ao pedido (envia ao backend)
-  const handleAddItem = async () => {
+const handleAddItem = async () => {
+  if (!tableNumber) return alert('Informe o número da mesa ou cliente.');
+  if (!selectedCategory || !selectedProduct) return alert('Selecione categoria e produto.');
+  if (quantity > selectedProductStock) return alert('Estoque insuficiente para este produto.');
 
-    if (!tableNumber) return alert('Informe o número da mesa ou cliente.');
-    if (!selectedCategory || !selectedProduct) return alert('Selecione categoria e produto.');
-    if (quantity > selectedProductStock) return alert('Estoque insuficiente para este produto.');
+  try {
+    // Primeiro, buscar todos os pedidos abertos
+    const existingOrdersRes = await axios.get('http://localhost:5000/orders');
+    const existingOrders: Order[] = existingOrdersRes.data;
+
+    // Verifica se já existe uma comanda com este nome de mesa/cliente
+    const duplicate = existingOrders.find(
+      (order) => order.tableNumber.toString().toLowerCase() === tableNumber.toLowerCase()
+    );
+
+    if (duplicate) {
+      return alert(`Já existe uma comanda aberta para "${tableNumber}". Use essa comanda existente na tela COMANDAS ou escolha outro nome.`);
+    }
 
     const itemTotal = selectedProductPrice * quantity;
 
-    try {
-      // Envia para o backend
-      await axios.post('http://localhost:5000/orders', {
-        tableNumber,
-        paymentMethod: 'dinheiro',
-        items: [{
+    // Envia para o backend (o backend já atualiza o estoque)
+    await axios.post('http://localhost:5000/orders', {
+      tableNumber,
+      paymentMethod: 'dinheiro',
+      items: [
+        {
           productId: Number(selectedProduct),
           quantity,
-          total: itemTotal
-        }]
-      });
+          total: itemTotal,
+        },
+      ],
+    });
 
-      alert('Item adicionado e estoque atualizado');
+    alert('Item adicionado e estoque atualizado');
 
-      // Diminuir estoque do produto
-      await axios.put(`http://localhost:5000/stock/${selectedProduct}`, {
-        stock: selectedProductStock - quantity
-      });
-
-
-      // Impressão para cozinha
-      if (selectedCategory === 'porção' || selectedCategory === 'lanche') {
-        printJS({
-          printable: [{
+    // Impressão para cozinha
+    if (selectedCategory.toLowerCase() === 'porção' || selectedCategory.toLowerCase() === 'lanche') {
+      printJS({
+        printable: [
+          {
             productName: selectedProductName,
             quantity,
             price: selectedProductPrice,
             total: itemTotal,
-            note
-          }],
-          properties: ['productName', 'quantity', 'price', 'total', 'note'],
-          type: 'json',
-          header: 'Pedido da Cozinha'
-        });
-      }
-
-      // Limpar campos
-      setSelectedCategory('');
-      setSelectedProduct('');
-      setQuantity(1);
-      setNote('');
-
-      // Voltar automaticamente
-      navigate('/comandas');
-
-    } catch (error: any) {
-      console.error(error);
-      if (error.response?.data?.error) {
-        alert(`Erro: ${error.response.data.error}`);
-      } else {
-        alert('Erro ao adicionar item.');
-      }
+            note,
+          },
+        ],
+        properties: ['productName', 'quantity', 'price', 'total', 'note'],
+        type: 'json',
+        header: 'Pedido da Cozinha',
+      });
     }
-  };
+
+    // Limpar campos
+    setSelectedCategory('');
+    setSelectedProduct('');
+    setQuantity(1);
+    setNote('');
+
+    // Voltar automaticamente
+    navigate('/comandas');
+
+  } catch (error: any) {
+    console.error(error);
+
+    if (error.response?.data?.error) {
+      alert(`Erro: ${error.response.data.error}`);
+    } else {
+      alert('Erro ao adicionar item.');
+    }
+  }
+};
 
   return (
     <div className="sales-container">

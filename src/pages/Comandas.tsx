@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/presleylogo-removebg-preview.png';
 import './Comandas.css';
+import axios from 'axios';
 
-// Interface para definir a estrutura de um pedido
+// Interface para o pedido (apenas o que precisamos aqui)
 interface Order {
+  id: number;
   tableNumber: string | number;
 }
 
@@ -12,31 +14,41 @@ const Comandas: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const navigate = useNavigate();
 
-  // Recupera os pedidos do Local Storage
   useEffect(() => {
-    const savedOrders = localStorage.getItem('salesOrders');
-    if (savedOrders) {
+    const fetchOrders = async () => {
       try {
-        const parsedOrders: Order[] = JSON.parse(savedOrders);
-        setOrders(parsedOrders);
+        const res = await axios.get<Order[]>('http://localhost:5000/orders');
+
+        // Só mantemos id e tableNumber
+        const simplifiedOrders = res.data.map(order => ({
+          id: order.id,
+          tableNumber: order.tableNumber
+        }));
+
+        setOrders(simplifiedOrders);
       } catch (error) {
-        console.error('Erro ao fazer parse dos pedidos:', error);
+        console.error('Erro ao buscar pedidos:', error);
         setOrders([]);
       }
-    }
+    };
+
+    fetchOrders();
   }, []);
 
-  const handleNewSale = (): void => {
-    navigate('/sales');
-  };
+  const handleNewSale = () => navigate('/sales');
+  const handleMakeOrder = (tableNumber: string | number) => navigate(`/sales/${tableNumber}`);
+  const handleViewDetails = (orderId: number) => {
+  navigate(`/sales-details/${orderId}`);
+};
 
-  const handleMakeOrder = (tableNumber: string | number): void => {
-    navigate(`/sales/${tableNumber}`);
-  };
+// Dentro do JSX:
+{orders.map(order => (
+  <div key={order.id}>
+    <span>Mesa {order.tableNumber}</span>
+    <button onClick={() => handleViewDetails(order.id)}>Ver Detalhes</button>
+  </div>
+))}
 
-  const handleViewDetails = (tableNumber: string | number): void => {
-    navigate(`/sales-details/${tableNumber}`);
-  };
 
   return (
     <div className="comandas">
@@ -49,20 +61,14 @@ const Comandas: React.FC = () => {
         <p className="no-orders">Nenhuma comanda em aberto.</p>
       ) : (
         <div className="orders-grid">
-          {orders.map((order: Order, index: number) => (
-            <div key={index} className="order-card">
+          {orders.map((order) => (
+            <div key={order.id} className="order-card">
               <h3 className="order-header">Mesa {order.tableNumber}</h3>
               <div className="order-actions">
-                <button
-                  className="btn-pedido"
-                  onClick={() => handleMakeOrder(order.tableNumber)}
-                >
+                <button className="btn-pedido" onClick={() => handleMakeOrder(order.tableNumber)}>
                   ➕ Fazer Pedido
                 </button>
-                <button
-                  className="btn-detalhes"
-                  onClick={() => handleViewDetails(order.tableNumber)}
-                >
+                <button className="btn-detalhes" onClick={() => navigate(`/sales-details/${order.id}`)}>
                   📋 Ver Detalhes
                 </button>
               </div>
