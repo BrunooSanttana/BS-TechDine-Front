@@ -55,7 +55,7 @@ const Sales: React.FC = () => {
   // --- Função para mostrar erros ---
   const showError = (msg: string) => {
     setErrorMessage(msg);
-    setTimeout(() => setErrorMessage(''), 5000); // some após 5 segundos
+    setTimeout(() => setErrorMessage(''), 5000);
   };
 
   // --- Receber mesa do Comandas ---
@@ -117,31 +117,36 @@ const Sales: React.FC = () => {
       const existingOrdersRes = await axios.get('http://localhost:5000/orders');
       const existingOrders: Order[] = existingOrdersRes.data;
 
-      // Verifica duplicata
-      const duplicate = existingOrders.find(
+      // Verifica se já existe uma comanda aberta
+      const existingOrder = existingOrders.find(
         (order) => order.tableNumber.toLowerCase() === tableNumber.toLowerCase()
       );
 
-      if (duplicate) {
-        return showError(
-          `Já existe uma comanda aberta para "${tableNumber}". Use essa comanda existente na tela COMANDAS ou escolha outro nome.`
-        );
-      }
-
       const itemTotal = selectedProductPrice * quantity;
 
-      // Envia para o backend
-      await axios.post('http://localhost:5000/orders', {
-        tableNumber,
-        paymentMethod: 'dinheiro',
-        items: [
-          {
-            productId: Number(selectedProduct),
-            quantity,
-            total: itemTotal,
-          },
-        ],
-      });
+      if (existingOrder) {
+        // Comanda existe → adicionar item
+        await axios.post(`http://localhost:5000/orders/${existingOrder.id}/items`, {
+          productId: Number(selectedProduct),
+          quantity,
+          total: itemTotal,
+          note,
+        });
+      } else {
+        // Comanda não existe → criar nova
+        await axios.post('http://localhost:5000/orders', {
+          tableNumber,
+          paymentMethod: 'dinheiro',
+          items: [
+            {
+              productId: Number(selectedProduct),
+              quantity,
+              total: itemTotal,
+              note,
+            },
+          ],
+        });
+      }
 
       // Impressão para cozinha
       if (['porção', 'lanche'].includes(selectedCategory.toLowerCase())) {
@@ -244,7 +249,6 @@ const Sales: React.FC = () => {
         Adicionar Item
       </button>
 
-      {/* Mensagem de erro */}
       {errorMessage && <p className="error-message">{errorMessage}</p>}
     </div>
   );
