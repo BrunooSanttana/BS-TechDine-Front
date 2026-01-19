@@ -23,7 +23,7 @@ interface OrderItem {
 
 interface Order {
   id: number;
-  tableNumber: string; // ⬅️ Aqui
+  tableNumber: string;
   paymentMethod: string;
   totalAmount: number;
   OrderItems: OrderItem[];
@@ -35,6 +35,7 @@ interface Category {
 }
 
 const Sales: React.FC = () => {
+  // --- Estados ---
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [products, setProducts] = useState<Product[]>([]);
@@ -45,27 +46,30 @@ const Sales: React.FC = () => {
   const [quantity, setQuantity] = useState<number>(1);
   const [note, setNote] = useState<string>('');
   const [tableNumber, setTableNumber] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
   const navigate = useNavigate();
   const location = useLocation();
   const { tableNumber: tableFromParams } = useParams<{ tableNumber: string }>();
 
-  // Receber mesa do Comandas
+  // --- Função para mostrar erros ---
+  const showError = (msg: string) => {
+    setErrorMessage(msg);
+    setTimeout(() => setErrorMessage(''), 5000); // some após 5 segundos
+  };
+
+  // --- Receber mesa do Comandas ---
   useEffect(() => {
     if (tableFromParams) setTableNumber(tableFromParams);
     if (location.state && location.state.tableNumber) setTableNumber(location.state.tableNumber);
   }, [location.state, tableFromParams]);
 
-  // Buscar categorias (sem Matéria Prima)
+  // --- Buscar categorias (sem Matéria Prima) ---
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const res = await axios.get('http://localhost:5000/categories');
-
-        // Remove a categoria Matéria-Prima
-        const filtered = res.data.filter(
-          (c: Category) => c.name !== 'Matéria-Prima'
-        );
-
+        const filtered = res.data.filter((c: Category) => c.name !== 'Matéria-Prima');
         setCategories(filtered);
       } catch (e) {
         console.error('Erro ao buscar categorias:', e);
@@ -74,9 +78,7 @@ const Sales: React.FC = () => {
     fetchCategories();
   }, []);
 
-
-
-  // Buscar produtos da categoria
+  // --- Buscar produtos da categoria ---
   useEffect(() => {
     if (!selectedCategory) return;
     const fetchProducts = async () => {
@@ -90,7 +92,7 @@ const Sales: React.FC = () => {
     fetchProducts();
   }, [selectedCategory]);
 
-  // Atualizar produto selecionado
+  // --- Atualizar produto selecionado ---
   useEffect(() => {
     const product = products.find(p => p.id === Number(selectedProduct));
     if (product) {
@@ -104,80 +106,74 @@ const Sales: React.FC = () => {
     }
   }, [selectedProduct, products]);
 
-  // Adicionar item ao pedido (envia ao backend)
-const handleAddItem = async () => {
-  if (!tableNumber) return alert('Informe o número da mesa ou cliente.');
-  if (!selectedCategory || !selectedProduct) return alert('Selecione categoria e produto.');
-  if (quantity > selectedProductStock) return alert('Estoque insuficiente para este produto.');
+  // --- Adicionar item ao pedido ---
+  const handleAddItem = async () => {
+    if (!tableNumber) return showError('Informe o número da mesa ou cliente.');
+    if (!selectedCategory || !selectedProduct) return showError('Selecione categoria e produto.');
+    if (quantity > selectedProductStock) return showError('Estoque insuficiente para este produto.');
 
-  try {
-    // Primeiro, buscar todos os pedidos abertos
-    const existingOrdersRes = await axios.get('http://localhost:5000/orders');
-    const existingOrders: Order[] = existingOrdersRes.data;
+    try {
+      // Buscar pedidos abertos
+      const existingOrdersRes = await axios.get('http://localhost:5000/orders');
+      const existingOrders: Order[] = existingOrdersRes.data;
 
-    // Verifica se já existe uma comanda com este nome de mesa/cliente
-    const duplicate = existingOrders.find(
-      (order) => order.tableNumber.toString().toLowerCase() === tableNumber.toLowerCase()
-    );
+      // Verifica duplicata
+      const duplicate = existingOrders.find(
+        (order) => order.tableNumber.toLowerCase() === tableNumber.toLowerCase()
+      );
 
-    if (duplicate) {
-      return alert(`Já existe uma comanda aberta para "${tableNumber}". Use essa comanda existente na tela COMANDAS ou escolha outro nome.`);
-    }
+      if (duplicate) {
+        return showError(
+          `Já existe uma comanda aberta para "${tableNumber}". Use essa comanda existente na tela COMANDAS ou escolha outro nome.`
+        );
+      }
 
-    const itemTotal = selectedProductPrice * quantity;
+      const itemTotal = selectedProductPrice * quantity;
 
-    // Envia para o backend (o backend já atualiza o estoque)
-    await axios.post('http://localhost:5000/orders', {
-      tableNumber,
-      paymentMethod: 'dinheiro',
-      items: [
-        {
-          productId: Number(selectedProduct),
-          quantity,
-          total: itemTotal,
-        },
-      ],
-    });
-
-    alert('Item adicionado e estoque atualizado');
-
-    // Impressão para cozinha
-    if (selectedCategory.toLowerCase() === 'porção' || selectedCategory.toLowerCase() === 'lanche') {
-      printJS({
-        printable: [
+      // Envia para o backend
+      await axios.post('http://localhost:5000/orders', {
+        tableNumber,
+        paymentMethod: 'dinheiro',
+        items: [
           {
-            productName: selectedProductName,
+            productId: Number(selectedProduct),
             quantity,
-            price: selectedProductPrice,
             total: itemTotal,
-            note,
           },
         ],
-        properties: ['productName', 'quantity', 'price', 'total', 'note'],
-        type: 'json',
-        header: 'Pedido da Cozinha',
       });
+
+      // Impressão para cozinha
+      if (['porção', 'lanche'].includes(selectedCategory.toLowerCase())) {
+        printJS({
+          printable: [
+            {
+              productName: selectedProductName,
+              quantity,
+              price: selectedProductPrice,
+              total: itemTotal,
+              note,
+            },
+          ],
+          properties: ['productName', 'quantity', 'price', 'total', 'note'],
+          type: 'json',
+          header: 'Pedido da Cozinha',
+        });
+      }
+
+      // Limpar campos
+      setSelectedCategory('');
+      setSelectedProduct('');
+      setQuantity(1);
+      setNote('');
+
+      navigate('/comandas');
+    } catch (error: any) {
+      console.error(error);
+      if (error.response?.data?.error) showError(`Erro: ${error.response.data.error}`);
+      else showError('Erro ao adicionar item.');
     }
-
-    // Limpar campos
-    setSelectedCategory('');
-    setSelectedProduct('');
-    setQuantity(1);
-    setNote('');
-
-    // Voltar automaticamente
-    navigate('/comandas');
-
-  } catch (error: any) {
-    console.error(error);
-
-    if (error.response?.data?.error) {
-      alert(`Erro: ${error.response.data.error}`);
-    } else {
-      alert('Erro ao adicionar item.');
-    }
-  }
-};
+  };
 
   return (
     <div className="sales-container">
@@ -247,6 +243,9 @@ const handleAddItem = async () => {
       <button type="button" onClick={handleAddItem}>
         Adicionar Item
       </button>
+
+      {/* Mensagem de erro */}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
     </div>
   );
 };
