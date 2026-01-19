@@ -4,7 +4,7 @@ import logo from '../images/presleylogo-removebg-preview.png';
 import './Comandas.css';
 import axios from 'axios';
 
-// Interface para o pedido (apenas o que precisamos aqui)
+// Interface mínima para comandas
 interface Order {
   id: number;
   tableNumber: string | number;
@@ -14,41 +14,30 @@ const Comandas: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const navigate = useNavigate();
 
+  const fetchOrders = async () => {
+    try {
+      const res = await axios.get<Order[]>('http://localhost:5000/orders');
+      const simplifiedOrders = res.data.map(order => ({
+        id: order.id,
+        tableNumber: order.tableNumber
+      }));
+      setOrders(simplifiedOrders);
+    } catch (error) {
+      console.error('Erro ao buscar pedidos:', error);
+      setOrders([]);
+    }
+  };
+
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const res = await axios.get<Order[]>('http://localhost:5000/orders');
-
-        // Só mantemos id e tableNumber
-        const simplifiedOrders = res.data.map(order => ({
-          id: order.id,
-          tableNumber: order.tableNumber
-        }));
-
-        setOrders(simplifiedOrders);
-      } catch (error) {
-        console.error('Erro ao buscar pedidos:', error);
-        setOrders([]);
-      }
-    };
-
     fetchOrders();
+    // Opcional: atualiza a lista a cada 5 segundos
+    const interval = setInterval(fetchOrders, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleNewSale = () => navigate('/sales');
   const handleMakeOrder = (tableNumber: string | number) => navigate(`/sales/${tableNumber}`);
-  const handleViewDetails = (orderId: number) => {
-  navigate(`/sales-details/${orderId}`);
-};
-
-// Dentro do JSX:
-{orders.map(order => (
-  <div key={order.id}>
-    <span>Mesa {order.tableNumber}</span>
-    <button onClick={() => handleViewDetails(order.id)}>Ver Detalhes</button>
-  </div>
-))}
-
+  const handleViewDetails = (orderId: number) => navigate(`/sales-details/${orderId}`);
 
   return (
     <div className="comandas">
@@ -68,7 +57,7 @@ const Comandas: React.FC = () => {
                 <button className="btn-pedido" onClick={() => handleMakeOrder(order.tableNumber)}>
                   ➕ Fazer Pedido
                 </button>
-                <button className="btn-detalhes" onClick={() => navigate(`/sales-details/${order.id}`)}>
+                <button className="btn-detalhes" onClick={() => handleViewDetails(order.id)}>
                   📋 Ver Detalhes
                 </button>
               </div>
