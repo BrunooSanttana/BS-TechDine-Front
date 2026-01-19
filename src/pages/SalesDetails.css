@@ -293,3 +293,103 @@
 .item-right button {
   min-width: 100px;
 }
+
+/* ÁREA DE PAGAMENTO */
+.payment-area {
+  background: #353535;
+  border-radius: 10px;
+  padding: 18px;
+  margin-top: 18px;
+  width: 100%;
+  max-width: 680px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.payment-area h3 {
+  color: #FFD700;
+  margin: 0 0 12px 0;
+  text-align: center;
+  font-size: 1.4rem;
+}
+
+/* Label e select */
+.payment-area label {
+  color: #FFD700;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.payment-area select {
+  margin-top: 6px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #2a2a2a;
+  color: #fff;
+  font-size: 1rem;
+}
+
+/* Botões da área de pagamento */
+.payment-area button {
+  width: 100%;
+  padding: 12px;
+  font-weight: 700;
+  border-radius: 8px;
+  border: none;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.12s ease;
+}
+
+.payment-area button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Botão confirmar fechamento */
+.payment-area button:nth-child(3) {
+  background-color: #028a02;
+  color: #fff;
+}
+
+.payment-area button:nth-child(3):hover {
+  background-color: #17b017;
+  transform: translateY(-2px);
+}
+
+/* Botão cancelar */
+.payment-area button:nth-child(4) {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.payment-area button:nth-child(4):hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+/* Mensagem de erro */
+.payment-error {
+  color: #ff6b6b;
+  font-weight: 700;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .payment-area {
+    padding: 12px;
+    max-width: 100%;
+  }
+
+  .payment-area button {
+    font-size: 0.95rem;
+  }
+}
